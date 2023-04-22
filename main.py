@@ -6,10 +6,11 @@ import concurrent.futures
 
 
 LEETCODE_URL = "https://leetcode.com/graphql/"
-START_DATE = "01/03/2023"
-END_DATE = "31/03/2023"
+START_DATE = "01/04/2023"
+END_DATE = "30/04/2023"
 THRESHOLD_CONTESTS = 3
-DATA_FILE = "usernames.csv"
+THRESHOLD_QUESTIONS = 2
+DATA_FILE = "usernames_3rd.csv"
 
 # convert the start date to timestamp
 start_date = datetime.datetime.strptime(START_DATE, "%d/%m/%Y").timestamp()
@@ -71,7 +72,7 @@ def fetch_data(username):
         for contest in contest_history:
             if contest["contest"]["startTime"] > start_date and contest["contest"]["startTime"] < end_date:
                 action_row = result_row.copy()
-                if not contest["attended"]:
+                if (not contest["attended"]) or (contest["problemsSolved"] < THRESHOLD_QUESTIONS) :
                     contest_missed.append(contest["contest"]["title"])
         str = ""
         for contest in contest_missed:
